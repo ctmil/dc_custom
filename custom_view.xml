@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+<!-- account_voucher.view_vendor_receipt_dialog_form -->
+
+        <record id="dc_custom_purchase_order_form" model="ir.ui.view">
+            <field name="name">dc.custom.purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+                <field name="partner_ref" position="after">
+                       <field name="origen" />
+                       <field name="destino" />
+                </field>
+		<field name="product_qty" position="after">
+			<field name="kilos_brutos" />
+			<field name="kilos_netos" />
+			<field name="kilos_llegada" />
+		</field>
+	        <xpath expr="//field[@name='order_line']/tree" position="attributes">
+        	        <attribute name="editable"/>
+	        </xpath>
+	        <xpath expr="//field[@name='order_line']/form/sheet/group/group" position="after">
+			<group string="Kilaje">
+				<field name="kilos_brutos" />
+				<field name="kilos_netos" />
+				<field name="kilos_llegada" />
+			</group>
+			<group string="Calculado">
+				<field name="desbaste" />
+				<field name="precio_kg" />
+				<field name="precio_desbaste" />
+			</group>
+	        </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
