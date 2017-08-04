@@ -6,6 +6,7 @@
     'depends': [
         # for afip_code on fiscal position and other tax modifications
         'purchase',
+	'sale'
     ],
     'test': [],
     'data': [
