@@ -36,5 +36,44 @@
             </field>
         </record>
 
+        <record id="dc_custom_sale_order_form" model="ir.ui.view">
+            <field name="name">dc.custom.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <field name="payment_term_id" position="after">
+                       <field name="origen" />
+                       <field name="destino" />
+                </field>
+		<field name="product_uom_qty" position="after">
+			<group string="Kilaje">
+				<field name="kilos_brutos" />
+				<field name="kilos_netos" />
+				<field name="kilos_llegada" />
+			</group>
+			<group string="Calculado">
+				<field name="desbaste" />
+				<field name="precio_kg" />
+				<field name="precio_desbaste" />
+			</group>
+		</field>
+	        <xpath expr="//field[@name='order_line']/tree" position="attributes">
+        	        <attribute name="editable"/>
+	        </xpath>
+	        <!-- xpath expr="//field[@name='order_line']/form/sheet/group/group" position="after">
+			<group string="Kilaje">
+				<field name="kilos_brutos" />
+				<field name="kilos_netos" />
+				<field name="kilos_llegada" />
+			</group>
+			<group string="Calculado">
+				<field name="desbaste" />
+				<field name="precio_kg" />
+				<field name="precio_desbaste" />
+			</group>
+	        </xpath -->
+            </field>
+        </record>
+
     </data>
 </openerp>
