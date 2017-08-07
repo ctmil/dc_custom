@@ -17,17 +17,75 @@ _logger = logging.getLogger(__name__)
 class purchase_order(models.Model):
         _inherit = 'purchase.order'
 
+	@api.multi
+	def _compute_cantidad(self):
+		for po in self:
+			cantidad = 0
+			for line in po.order_line:
+				cantidad = cantidad + line.product_qty
+			po.cantidad = cantidad
+
+	@api.multi
+	def _compute_kilos_netos(self):
+		for po in self:
+			kilos_netos = 0
+			for line in po.order_line:
+				kilos_netos = kilos_netos + line.kilos_netos
+			po.kilos_netos = kilos_netos
+
+	@api.multi
+	def _compute_kilos_brutos(self):
+		for po in self:
+			kilos_brutos = 0
+			for line in po.order_line:
+				kilos_brutos = kilos_brutos + line.kilos_brutos
+			po.kilos_brutos = kilos_brutos
+	
+	@api.multi
+	def _compute_desbaste(self):
+		for po in self:
+			if po.kilos_netos == 0:
+				po.desbaste = 0
+			else:
+				po.desbaste = ((po.kilos_netos - po.kilos_llegada) / po.kilos_netos) * 100
+			
+	@api.multi
+	def _compute_precio_kg(self):
+		for po in self:
+			if po.kilos_netos == 0:
+				po.precio_kg = 0
+			else:
+				po.precio_kg = po.amount_total / po.kilos_netos
+
+	@api.multi
+	def _compute_precio_kg_desbaste(self):
+		for po in self:
+			if po.kilos_llegada == 0:
+				po.precio_kg_desbaste = 0
+			else:
+				po.precio_kg_desbaste = po.amount_total / po.kilos_llegada
+
+	@api.multi
+	def _compute_precio_unidad(self):
+		for po in self:
+			if po.cantidad == 0:
+				po.precio_unidad = 0
+			else:
+				po.precio_unidad = po.amount_total / po.cantidad
+
 	origen = fields.Char('Origen')
 	destino = fields.Char('Destino')
+	cantidad = fields.Integer('Cantidad',compute=_compute_cantidad)
+	kilos_netos = fields.Float('Kg Netos',compute=_compute_kilos_netos)
+	kilos_brutos = fields.Float('Kg Brutos',compute=_compute_kilos_brutos)
+	kilos_llegada = fields.Float('Kg Llegada')
+	desbaste = fields.Float('Desbaste',compute=_compute_desbaste)
+	precio_kg = fields.Float('Precio / Kg',compute=_compute_precio_kg)
+	precio_kg_desbaste = fields.Float('Precio / Kg con Desbaste',compute=_compute_precio_kg_desbaste)
+	precio_unidad = fields.Float('Precio Unidad',compute=_compute_precio_unidad)
 
 class purchase_order_line(models.Model):
 	_inherit = 'purchase.order.line'
-
-	@api.multi
-	def _compute_desbaste(self):
-		for pol in self:
-			if pol.kilos_netos > 0:
-				pol.desbaste = ((pol.kilos_netos - pol.kilos_llegada) / pol.kilos_netos) *  100
 
 	@api.multi
 	def _compute_desbaste(self):

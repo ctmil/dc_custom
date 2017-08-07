@@ -21,6 +21,22 @@
 	        <xpath expr="//field[@name='order_line']/tree" position="attributes">
         	        <attribute name="editable"/>
 	        </xpath>
+	        <xpath expr="//page[1]" position="after">
+			<page string="Estadisticas">
+				<group string="Kilos">
+					<field name="cantidad" />
+					<field name="kilos_brutos" />
+					<field name="kilos_netos" />
+					<field name="kilos_llegada" />
+				</group>
+				<group string="Calculos">
+					<field name="desbaste" />
+					<field name="precio_kg" />
+					<field name="precio_kg_desbaste" />
+					<field name="precio_unidad" />
+				</group>
+			</page>
+	        </xpath>
 	        <xpath expr="//field[@name='order_line']/form/sheet/group/group" position="after">
 			<group string="Kilaje">
 				<field name="kilos_brutos" />
