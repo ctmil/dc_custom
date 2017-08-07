@@ -83,6 +83,8 @@ class purchase_order(models.Model):
 	precio_kg = fields.Float('Precio / Kg',compute=_compute_precio_kg)
 	precio_kg_desbaste = fields.Float('Precio / Kg con Desbaste',compute=_compute_precio_kg_desbaste)
 	precio_unidad = fields.Float('Precio Unidad',compute=_compute_precio_unidad)
+	compra_hacienda_id = fields.Many2one('purchase.order',string='Compra de Hacienda')
+	otras_compras_ids = fields.One2many(comodel_name='purchase.order.line',inverse_name='compra_hacienda_id',string='Compras relacionadas')
 
 class purchase_order_line(models.Model):
 	_inherit = 'purchase.order.line'
@@ -112,6 +114,9 @@ class purchase_order_line(models.Model):
 	desbaste = fields.Float('Desbaste',compute=_compute_desbaste)
 	precio_kg = fields.Float('Precio Kg',compute=_compute_precio_kg)
 	precio_desbaste = fields.Float('Precio c/Desbaste',compute=_compute_precio_desbaste)
+	compra_hacienda_id = fields.Many2one('purchase.order',string='Compra de Hacienda')
+	date_order = fields.Datetime('Fecha Orden',related='order_id.date_order')
+	partner_id = fields.Many2one('res.partner',related='order_id.partner_id')
 
 class sale_order(models.Model):
         _inherit = 'sale.order'

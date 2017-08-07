@@ -12,11 +12,26 @@
                 <field name="partner_ref" position="after">
                        <field name="origen" />
                        <field name="destino" />
+		       <!-- field name="compra_hacienda_id" / -->
                 </field>
+	        <xpath expr="//notebook" position="after">
+			<group string="Otras compras">
+				<field name="otras_compras_ids" readonly="1">
+					<tree string="Otras compras">
+						<field name="name" />
+						<field name="product_id" />
+						<field name="partner_id" />
+						<field name="date_order" />
+						<field name="price_subtotal" />
+					</tree>
+				</field>
+			</group>
+	        </xpath>
 		<field name="product_qty" position="after">
 			<field name="kilos_brutos" />
 			<field name="kilos_netos" />
 			<field name="kilos_llegada" />
+		        <field name="compra_hacienda_id" />
 		</field>
 	        <xpath expr="//field[@name='order_line']/tree" position="attributes">
         	        <attribute name="editable"/>
@@ -47,6 +62,9 @@
 				<field name="desbaste" />
 				<field name="precio_kg" />
 				<field name="precio_desbaste" />
+			</group>
+			<group string="Compra relacionada">
+				<field name="compra_hacienda_id" />
 			</group>
 	        </xpath>
             </field>
