@@ -5,6 +5,7 @@
     'license': 'AGPL-3',
     'depends': [
         # for afip_code on fiscal position and other tax modifications
+	'analytic',
         'purchase',
 	'sale'
     ],
