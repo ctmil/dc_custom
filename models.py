@@ -14,6 +14,26 @@ from dateutil import relativedelta
 #Get the logger
 _logger = logging.getLogger(__name__)
 
+class account_analytic_line(models.Model):
+        _inherit = 'account.analytic.line'
+
+	@api.model
+	def update_lines(self):
+		lines = self.search([])
+		for line in lines:
+			vals = {}
+			if not line.partner_id:
+				if line.move_id and line.move_id.partner_id:
+					vals['partner_id'] = line.move_id.partner_id.id
+			if not line.journal_id:
+				if line.move_id and line.move_id.journal_id:
+					vals['journal_id'] = line.move_id.journal_id.id
+			if vals:
+				line.write(vals)
+
+	journal_id = fields.Many2one('account.journal','Journal')
+	
+
 class purchase_order(models.Model):
         _inherit = 'purchase.order'
 
