@@ -110,14 +110,13 @@ class account_invoice_line(models.Model):
 	_inherit = 'account.invoice.line'
 
 	@api.multi
-	def _compute_kilos_unidad(self):
+	def _compute_kilos(self):
 		for inl in self:
-			if inl.quantity > 0:
-				inl.kilos_unidad = inl.kilos / inl.quantity
+			inl.kilos = inl.kilos_unidad * inl.quantity
 
 	date_due = fields.Date('Fecha Vencimiento')
-	kilos = fields.Float('Kilos')
-	kilos_unidad = fields.Float('Kilos por unidad',compute=_compute_kilos_unidad)
+	kilos = fields.Float('Kilos',compute=_compute_kilos)
+	kilos_unidad = fields.Float('Kilos por unidad')
 	
 
 class purchase_order_line(models.Model):
