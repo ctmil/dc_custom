@@ -106,6 +106,20 @@ class purchase_order(models.Model):
 	compra_hacienda_id = fields.Many2one('purchase.order',string='Compra de Hacienda')
 	otras_compras_ids = fields.One2many(comodel_name='purchase.order.line',inverse_name='compra_hacienda_id',string='Compras relacionadas')
 
+class account_invoice_line(models.Model):
+	_inherit = 'account.invoice.line'
+
+	@api.multi
+	def _compute_kilos_unidad(self):
+		for inl in self:
+			if inl.quantity > 0:
+				inl.kilos_unidad = inl.kilos / inl.quantity
+
+	date_due = fields.Date('Fecha Vencimiento')
+	kilos = fields.Float('Kilos')
+	kilos_unidad = fields.Float('Kilos por unidad',compute=_compute_kilos_unidad)
+	
+
 class purchase_order_line(models.Model):
 	_inherit = 'purchase.order.line'
 

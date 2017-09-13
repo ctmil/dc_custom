@@ -1,6 +1,26 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+
+        <record id="dc_custom_account_invoice_form" model="ir.ui.view">
+            <field name="name">dc.supplier.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="arch" type="xml">
+		<!-- xpath expr="//field[@name='invoice_line_ids']/form/field[@name='price_unit']" position="after">
+                <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                        <attribute name="editable"/>
+                </xpath -->
+		<field name='price_unit' position="after">
+        	        <field name="kilos" />
+        	        <field name="kilos_unidad" />
+        	        <field name="date_due" />
+	        </field>
+	    </field>
+	</record>
+
+
+
         
         <record id="dc_custom_view_account_analytic_line_pivot" model="ir.ui.view">
             <field name="name">dc.custom.view.account.analytic.line.pivot</field>
