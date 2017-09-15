@@ -20,6 +20,27 @@
 	</record>
 
 
+        <record id="dc_custom_account_invoice_form_v1" model="ir.ui.view">
+            <field name="name">dc.supplier.invoice.form.v1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="arch" type="xml">
+	        <xpath expr="//page[1]" position="after">
+			<page string="Estadisticas">
+				<group string="Estadisticas">
+					<field name="total_cantidad" />
+					<field name="kilos_netos" />
+					<field name="kilos_llegada" />
+					<field name="kilos_inv_unidad" />
+					<field name="desbaste" />
+					<field name="precio_kilogramo" />
+					<field name="precio_kg_desbaste" />
+					<field name="precio_unidad" />
+				</group>
+			</page>
+		</xpath>
+	    </field>
+	</record>
 
         
         <record id="dc_custom_view_account_analytic_line_pivot" model="ir.ui.view">

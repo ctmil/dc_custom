@@ -106,6 +106,64 @@ class purchase_order(models.Model):
 	compra_hacienda_id = fields.Many2one('purchase.order',string='Compra de Hacienda')
 	otras_compras_ids = fields.One2many(comodel_name='purchase.order.line',inverse_name='compra_hacienda_id',string='Compras relacionadas')
 
+class account_invoice(models.Model):
+	_inherit = 'account.invoice'
+
+	@api.multi
+	def _compute_total_cantidad(self):
+		for inv in self:
+			qty = 0
+			for line in inv.invoice_line_ids:
+				qty = qty + line.quantity
+			inv.total_cantidad = qty
+
+	@api.multi
+	def _compute_kilos_netos(self):
+		for inv in self:
+			kilos_netos = 0
+			for line in inv.invoice_line_ids:
+				kilos_netos = kilos_netos + line.kilos
+			inv.kilos_netos = kilos_netos
+
+	@api.multi
+	def _compute_kilos_inv_unidad(self):
+		for inv in self:
+			if inv.total_cantidad > 0:
+				inv.kilos_inv_unidad = inv.kilos_netos / inv.total_cantidad
+
+	@api.multi
+	def _compute_desbaste(self):
+		for inv in self:
+			if inv.kilos_netos > 0:
+				inv.desbaste = (inv.kilos_netos - inv.kilos_llegada) / inv.kilos_netos	
+
+	@api.multi
+	def _compute_precio_unidad(self):
+		for inv in self:
+			if inv.total_cantidad > 0:
+				inv.precio_unidad = inv.amount_total / inv.total_cantidad
+
+	@api.multi
+	def _compute_precio_kilogramo(self):
+		for inv in self:
+			if inv.kilos_netos > 0:
+				inv.precio_kilogramo = inv.amount_total / inv.kilos_netos
+
+	@api.multi
+	def _compute_precio_kg_desbaste(self):
+		for inv in self:
+			if inv.kilos_llegada > 0:
+				inv.precio_kg_desbaste = inv.amount_total / inv.kilos_llegada
+
+	total_cantidad = fields.Float('Cantidad',compute=_compute_total_cantidad)
+	kilos_netos = fields.Float('Kilos Netos',compute=_compute_kilos_netos)
+	kilos_llegada = fields.Float('Kilos Llegada')
+	kilos_inv_unidad = fields.Float('Kilos Unidad',compute=_compute_kilos_inv_unidad)
+	desbaste = fields.Float('Desbaste',compute=_compute_desbaste)
+	precio_unidad = fields.Float('Precio x Unidad',compute=_compute_precio_unidad)
+	precio_kilogramo = fields.Float('Precio x Kg',compute=_compute_precio_kilogramo)
+	precio_kg_desbaste = fields.Float('Precio Desbaste',compute=_compute_precio_kg_desbaste)
+
 class account_invoice_line(models.Model):
 	_inherit = 'account.invoice.line'
 
