@@ -32,7 +32,7 @@
 					<field name="kilos_netos" />
 					<field name="kilos_llegada" />
 					<field name="kilos_inv_unidad" />
-					<field name="desbaste" />
+					<field name="desbaste" string="Desbaste %"/>
 					<field name="precio_kilogramo" />
 					<field name="precio_kg_desbaste" />
 					<field name="precio_unidad" />

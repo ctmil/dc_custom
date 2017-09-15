@@ -135,7 +135,7 @@ class account_invoice(models.Model):
 	def _compute_desbaste(self):
 		for inv in self:
 			if inv.kilos_netos > 0:
-				inv.desbaste = (inv.kilos_netos - inv.kilos_llegada) / inv.kilos_netos	
+				inv.desbaste = ((inv.kilos_netos - inv.kilos_llegada) / inv.kilos_netos) * 100	
 
 	@api.multi
 	def _compute_precio_unidad(self):
