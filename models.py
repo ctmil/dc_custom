@@ -114,7 +114,8 @@ class account_invoice(models.Model):
 		for inv in self:
 			qty = 0
 			for line in inv.invoice_line_ids:
-				qty = qty + line.quantity
+				if line.product_id.type == 'product':
+					qty = qty + line.quantity
 			inv.total_cantidad = qty
 
 	@api.multi
